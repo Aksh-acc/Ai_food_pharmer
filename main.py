@@ -10,7 +10,12 @@ from autogen_agentchat.ui import Console
 from autogen_core.models import UserMessage
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from tavily import TavilyClient
-tavily_client = TavilyClient(api_key="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")
+import os
+# Load environment variables
+from dotenv import load_dotenv
+
+load_dotenv()
+tavily_client = TavilyClient(api_key=os.getenv("tavily_api_key"))
 def web_search_tool(query:str) -> str:
     """Perform a web search using Tavily API."""
     response = tavily_client.search(query=query, num_results=2)
@@ -22,7 +27,7 @@ def web_search_tool(query:str) -> str:
 
 
 
-model_client = OpenAIChatCompletionClient(model="gemini-1.5-pro", api_key="AIzaSyBNA4vbBXBa2z2ADqwv_bnwi1RNgB0v6Hw")
+model_client = OpenAIChatCompletionClient(model="gemini-1.5-pro", api_key=os.getenv("GEMINI_API_KEY"))
 agent = AssistantAgent(
     name="ImageDescriptionAgent",
     model_client=model_client,
